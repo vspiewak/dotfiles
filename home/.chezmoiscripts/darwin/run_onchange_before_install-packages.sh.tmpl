@@ -14,7 +14,9 @@ set -eufo pipefail
      "kubernetes-cli"
      "helm"
      "shellcheck"
-     "ffmpeg" -}}
+     "ffmpeg" 
+     "dockutil"
+-}}
 
 {{ $casks := list
      "firefox"
@@ -26,8 +28,10 @@ set -eufo pipefail
      "discord"
      "transmission"
      "visual-studio-code"
+     "intellij-idea"
      "vlc"
-     "spotify" -}}
+     "spotify" 
+-}}
 
 brew bundle --file=/dev/stdin <<EOF
 {{ range ($brews | sortAlpha | uniq) -}}
