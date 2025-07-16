@@ -8,4 +8,10 @@ alias k=kubectl
 
 {{ end -}}
 
+{{ if stat "/opt/homebrew/bin/gcloud" -}}
+# add gcloud completion
+source "$(brew --prefix)/share/google-cloud-sdk/completion.zsh.inc"
+
+{{ end -}}
+
 export EDITOR=vim
