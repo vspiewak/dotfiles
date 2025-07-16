@@ -1,0 +1,70 @@
+[user]
+	name = Vincent Spiewak
+	email = {{ .email }}
+
+[advice]
+	addEmptyPathspec = false
+	pushNonFastForward = false
+	statusHints = false
+
+[alias]
+	a = add
+	ap = add -p
+	b = branch
+	c = clone
+	ca = commit --amend
+	co = checkout
+	cob = checkout -b
+	com = checkout main
+	cp = cherry-pick
+	d = diff
+	fo = fetch origin
+	p = push
+	pf = push --force-with-lease
+	prb = pull --rebase
+	rpo = remote prune origin
+	wd = diff --patience --word-diff
+
+[branch]
+	sort = -committerdate
+
+[column]
+	ui = auto
+
+[core]
+	editor = nvim
+	whitespace = trailing-space,space-before-tab
+
+[diff]
+	algorithm = histogram
+	colorMoved = plain
+	renamelimit = 8192
+	renames = true
+
+[fetch]
+	all = true
+	fsckobjects = false
+	prune = true
+
+[filter "lfs"]
+	clean = git-lfs clean -- %f
+	smudge = git-lfs smudge -- %f
+	process = git-lfs filter-process
+	required = true
+
+[init]
+	defaultBranch = main
+
+[pull]
+	rebase = true
+
+[push]
+	autoSetupRemote = true
+	default = current
+
+[rebase]
+	autoSquash = true
+	autoStash = true
+	updateRefs = true
+
+{{/* vim: set filetype=gitconfig: */}}
