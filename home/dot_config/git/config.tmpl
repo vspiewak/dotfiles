@@ -1,6 +1,7 @@
 [user]
 	name = Vincent Spiewak
 	email = {{ .email }}
+    signingkey = /Users/vspiewak/.ssh/id_ed25519.pub
 
 [advice]
 	addEmptyPathspec = false
@@ -32,7 +33,7 @@
 	ui = auto
 
 [core]
-	editor = nvim
+	editor = vim
 	whitespace = trailing-space,space-before-tab
 
 [diff]
@@ -66,5 +67,8 @@
 	autoSquash = true
 	autoStash = true
 	updateRefs = true
+
+[gpg]
+	format = ssh
 
 {{/* vim: set filetype=gitconfig: */}}
