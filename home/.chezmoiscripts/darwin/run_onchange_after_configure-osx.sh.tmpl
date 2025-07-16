@@ -4,10 +4,20 @@ set -eufo pipefail
 
 trap 'killall Dock' EXIT
 
+# Set computer name (as done via System Preferences → Sharing)
+sudo scutil --set ComputerName "{{ .hostname }}"
+sudo scutil --set HostName "{{ .hostname }}"
+sudo scutil --set LocalHostName "{{ .hostname }}"
+sudo defaults write /Library/Preferences/SystemConfiguration/com.apple.smb.server NetBIOSName -string "{{ .hostname }}"
+
+# Disable the sound effects on boot
+#sudo nvram SystemAudioVolume=" "
+
 # Enable TouchID for sudo
+# FIXME: /etc/pam.d/sudo_local.template
 ! grep -q pam_tid.so /etc/pam.d/sudo && sudo gsed -i '2iauth       sufficient     pam_tid.so' /etc/pam.d/sudo
 
-# Don’t show recent applications in Dock
+# Don't show recent applications in Dock
 defaults write com.apple.dock show-recents -int 0
 
 # Require password immediately after sleep or screen saver begins

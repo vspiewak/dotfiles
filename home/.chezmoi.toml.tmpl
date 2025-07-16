@@ -9,6 +9,9 @@
 
 {{- $email := "767370696577616b40676d61696c2e636f6d" -}}
 
+{{- $hostname := promptStringOnce . "hostname" "What is your hostname" -}}
+
 [data]
     headless = {{ $headless }}
     email = {{ $email | hexDecode | quote }}
+    hostname = {{ $hostname | quote }}
