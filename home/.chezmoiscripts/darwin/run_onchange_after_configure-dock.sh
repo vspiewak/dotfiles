@@ -32,6 +32,7 @@ done
 
 # added in reverse order
 declare -a add_labels=(
+	'/Applications/Spotify.app'
 	'/Applications/VLC.app'
 	'/Applications/IntelliJ IDEA.app'
 	'/Applications/Visual Studio Code.app'
