@@ -1,0 +1,3 @@
+font-feature = -calt, -liga, -dlig
+theme = catppuccin-frappe
+#theme = dark:catppuccin-frappe,light:catppuccin-latte
