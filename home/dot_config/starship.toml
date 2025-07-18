@@ -1,18 +1,16 @@
-# A minimal left prompt
-#format = """$character"""
+# config schema
+"$schema" = 'https://starship.rs/config-schema.json'
 
-# move the rest of the prompt to the right
-#right_format = """$all"""
-
-[line_break] 
+[line_break]
+# prompt on a single line
 disabled = true
 
 [character]
-success_symbol = '[➜](bold green) '
-error_symbol = '[✗](bold red) '
+success_symbol = '[➜](bold green)'
+error_symbol = '[✗](bold red)'
 
 [directory]
-# disable truncation
+# no path truncation
 truncation_length = 100
 truncate_to_repo = false
 
