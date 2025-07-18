@@ -1,0 +1,29 @@
+# A minimal left prompt
+#format = """$character"""
+
+# move the rest of the prompt to the right
+#right_format = """$all"""
+
+[line_break] 
+disabled = true
+
+[character]
+success_symbol = '[➜](bold green) '
+error_symbol = '[✗](bold red) '
+
+[directory]
+# disable truncation
+truncation_length = 100
+truncate_to_repo = false
+
+[aws]
+disabled = true
+
+[gcloud]
+disabled = true
+
+[openstack]
+disabled = true
+
+[azure]
+disabled = true
