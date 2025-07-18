@@ -7,6 +7,7 @@ trap 'killall Dock' EXIT
 # removed
 declare -a remove_labels=(
 	Launchpad
+	Safari
 	Messages
 	Mail
 	Maps
