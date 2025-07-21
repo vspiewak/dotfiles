@@ -38,6 +38,7 @@ declare -a add_labels=(
 	'/Applications/IntelliJ IDEA.app'
 	'/Applications/Visual Studio Code.app'
 	'/Applications/Craft.app'
+	'/Applications/Microsoft Teams.app'
 	'/Applications/Discord.app'
 	'/Applications/Slack.app'
 	'/Applications/Google Chrome.app'

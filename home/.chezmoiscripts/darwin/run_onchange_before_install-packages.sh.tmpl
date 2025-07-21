@@ -3,6 +3,7 @@
 set -eufo pipefail
 
 {{ $brews := list
+     "bitwarden-cli"
      "curl"
      "wget"
      "gnu-sed"
@@ -23,6 +24,8 @@ set -eufo pipefail
 -}}
 
 {{ $casks := list
+     "microsoft-teams"
+     "bitwarden"
      "firefox"
      "google-chrome"
      "ghostty"
