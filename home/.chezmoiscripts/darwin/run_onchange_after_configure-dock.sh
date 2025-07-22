@@ -35,6 +35,7 @@ done
 declare -a add_labels=(
 	'/Applications/Spotify.app'
 	'/Applications/VLC.app'
+	'/Applications/MongoDB Compass.app'
 	'/Applications/IntelliJ IDEA.app'
 	'/Applications/Visual Studio Code.app'
 	'/Applications/Craft.app'
