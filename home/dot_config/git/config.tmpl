@@ -1,7 +1,7 @@
 [user]
 	name = Vincent Spiewak
 	email = {{ .email }}
-	signingkey = /Users/vspiewak/.ssh/id_ed25519.pub
+	signingkey = ~/.ssh/id_ed25519.pub
 
 [advice]
 	addEmptyPathspec = false
@@ -73,5 +73,8 @@
 
 [commit]
 	gpgsign = true
+
+[includeIf "gitdir:/Users/vspiewak/Dev/sephoraeme/github/"]
+	path = /Users/vspiewak/.config/git/sephoraeme.config
 
 {{/* vim: set filetype=gitconfig: */}}

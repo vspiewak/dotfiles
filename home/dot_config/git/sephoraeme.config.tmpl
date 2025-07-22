@@ -1,0 +1,6 @@
+[user]
+    email = {{ .email_sephoraeme }}
+    signingkey = ~/.ssh/sephoraeme.pub
+
+[core]
+    sshCommand = "ssh -o IdentitiesOnly=yes -i ~/.ssh/sephoraeme -F /dev/null"

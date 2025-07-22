@@ -1,3 +1,7 @@
 Host github.com
   AddKeysToAgent yes
   IdentityFile ~/.ssh/id_ed25519
+
+Host bitbucket.org
+  AddKeysToAgent yes
+  IdentityFile ~/.ssh/sephoraeme

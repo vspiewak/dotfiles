@@ -8,10 +8,12 @@
 {{- end -}}
 
 {{- $email := "767370696577616b40676d61696c2e636f6d" -}}
+{{- $email_sephoraeme := "767370696577616b40706172746e65722e736570686f72612e6575" -}}
 
 {{- $hostname := promptStringOnce . "hostname" "What is your hostname" -}}
 
 [data]
     headless = {{ $headless }}
     email = {{ $email | hexDecode | quote }}
+    email_sephoraeme = {{ $email_sephoraeme | hexDecode | quote }}
     hostname = {{ $hostname | quote }}
