@@ -7,5 +7,9 @@
 export SDKMAN_DIR="$HOME/.sdkman"
 [[ -s "$HOME/.sdkman/bin/sdkman-init.sh" ]] && source "$HOME/.sdkman/bin/sdkman-init.sh"
 
-# install default jdk
-sdk install java
+# install jdks
+sdk install java 21.0.8-tem
+sdk install java 8.0.462-amzn
+
+# set default
+sdk default java 21.0.8-tem
