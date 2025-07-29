@@ -12,4 +12,4 @@ sdk install java 21.0.8-tem
 sdk install java 8.0.462-amzn
 
 # set default
-sdk default java 21.0.8-tem
+sdk default java 8.0.462-amzn
