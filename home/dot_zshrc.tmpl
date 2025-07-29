@@ -2,6 +2,9 @@
 autoload -Uz compinit
 compinit
 
+# private values
+source "$HOME/.zshrc.private"
+
 {{ if stat "/opt/homebrew/bin/kubectl" -}}
 # add kubectl completion
 source <(kubectl completion zsh)
@@ -16,6 +19,8 @@ source "$(brew --prefix)/share/google-cloud-sdk/completion.zsh.inc"
 # gcloud alias
 alias gcloud-dailybrain='gcloud config set account {{ .email_dailybrain }}'
 alias gcloud-sephoraeme='gcloud config set account {{ .email_sephoraeme }}'
+
+alias gcloud-s4a-dev='gcloud config set project s4a-coredata-dev'
 
 {{ end -}}
 
