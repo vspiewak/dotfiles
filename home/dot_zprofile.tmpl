@@ -12,3 +12,10 @@ export VOLTA_HOME="$HOME/.volta"
 export PATH="$VOLTA_HOME/bin:$PATH"
 
 {{ end -}}
+
+
+{{ if stat "/opt/homebrew/bin/go" -}}
+# go bin
+export PATH="$HOME/go/bin:$PATH"
+
+{{ end -}}
