@@ -1,0 +1,11 @@
+#!/bin/bash
+
+set -eufo pipefail
+
+{{ $binaries := list
+     "mvdan.cc/sh/v3/cmd/shfmt@latest"
+-}}
+
+{{ range ($binaries | sortAlpha | uniq) -}}
+go install "{{ . }}"
+{{ end -}}
