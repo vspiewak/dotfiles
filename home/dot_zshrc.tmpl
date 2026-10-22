@@ -56,5 +56,12 @@ export JAVA_HOME=`/usr/libexec/java_home -v 1.8.0_462`
 
 {{ end -}}
 
+{{ if stat "/opt/homebrew/bin/pyenv" -}}
+export PYENV_ROOT="$HOME/.pyenv"
+[[ -d $PYENV_ROOT/bin ]] && export PATH="$PYENV_ROOT/bin:$PATH"
+eval "$(pyenv init - zsh)"
+
+{{ end -}}
+
 # enable starship
 eval "$(starship init zsh)"
