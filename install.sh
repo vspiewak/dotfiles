@@ -1,11 +1,12 @@
 #!/bin/sh
 #
-# Bootstrap chezmoi and apply these dotfiles:
+# Bootstrap a Mac with Homebrew, chezmoi and these dotfiles:
 #
 #   curl -fsSL dotfiles.vspiewak.com | sh
 #
-# Homebrew is a prerequisite, not installed here: its installer is interactive
-# (sudo, Xcode Command Line Tools) and doesn't behave when piped into a shell.
+# Homebrew's installer also installs the Xcode Command Line Tools.
+
+HOMEBREW_INSTALL_URL=https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh
 
 # everything runs from main() so a truncated download never runs half a script
 main() {
@@ -16,20 +17,15 @@ main() {
 		exit 1
 	fi
 
-	# brew can be installed but not on PATH yet (terminal not restarted)
-	if ! command -v brew >/dev/null 2>&1 && [ -x /opt/homebrew/bin/brew ]; then
-		eval "$(/opt/homebrew/bin/brew shellenv)"
+	installed_homebrew=false
+	if ! command -v brew >/dev/null 2>&1 && [ ! -x /opt/homebrew/bin/brew ]; then
+		install_homebrew
+		installed_homebrew=true
 	fi
 
-	if ! command -v brew >/dev/null 2>&1; then
-		cat >&2 <<'EOF'
-Homebrew is not installed. Install it first (it also installs the Xcode Command Line Tools):
-
-  /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
-
-Then run this installer again.
-EOF
-		exit 1
+	# brew is not on PATH in this shell yet (fresh install or terminal not restarted)
+	if ! command -v brew >/dev/null 2>&1 && [ -x /opt/homebrew/bin/brew ]; then
+		eval "$(/opt/homebrew/bin/brew shellenv)"
 	fi
 
 	if ! command -v chezmoi >/dev/null 2>&1; then
@@ -40,6 +36,20 @@ EOF
 
 	echo
 	echo "Done. Open a new terminal to load the new environment."
+	if [ "$installed_homebrew" = true ]; then
+		echo "Skip Homebrew's \"Next steps\" above: chezmoi already manages ~/.zprofile."
+	fi
+}
+
+install_homebrew() {
+	# when piped into sh, stdin is this script: Homebrew needs the terminal to ask for sudo
+	if ! (: </dev/tty) 2>/dev/null; then
+		echo "error: no terminal to install Homebrew from, install it first:" >&2
+		echo "  /bin/bash -c \"\$(curl -fsSL $HOMEBREW_INSTALL_URL)\"" >&2
+		exit 1
+	fi
+
+	/bin/bash -c "$(curl -fsSL "$HOMEBREW_INSTALL_URL")" </dev/tty
 }
 
 main "$@"
