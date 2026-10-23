@@ -2,7 +2,6 @@
 set -eu
 
 brew bundle --file=/dev/stdin <<EOF
-brew "curl"
 brew "ffmpeg"
 brew "gh"
 brew "git"
