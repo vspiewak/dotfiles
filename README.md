@@ -62,10 +62,12 @@ Repos under `~/Dev/sephoraeme/` use the work GitHub account (`vspiewak-sephoraem
 Once per machine, logged in to github.com as the work account in the browser:
 
 ```sh
-ssh-key-sync work      # ~/.ssh/sephoraeme, on the work account only
+ssh-key-sync sephoraeme   # ~/.ssh/sephoraeme, on the work account only
 mkdir -p ~/Dev/sephoraeme && cd ~/Dev/sephoraeme
 gh auth login --hostname github.com --git-protocol ssh --skip-ssh-key --web --insecure-storage
 ```
+
+Another account, `<name>` for repos under `~/Dev/<name>/`: copy `sephoraeme.config.tmpl` (and its email in `.chezmoitemplates`), add its `includeIf` to the git config, and a line for it in `ssh-key-sync` and the `gh` wrapper.
 
 ## Update
 
