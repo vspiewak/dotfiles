@@ -8,7 +8,9 @@ PasswordAuthentication no
 KbdInteractiveAuthentication no
 EOF
 
-# Remote Login can't be turned on from a script without Full Disk Access
-if ! nc -z -G 1 localhost 22 2>/dev/null; then
-	echo "SSH: turn on System Settings > General > Sharing > Remote Login"
+# Remote Login, as the System Settings toggle (after the keys-only config, so it
+# never accepts passwords); unlike systemsetup, no Full Disk Access needed
+sudo launchctl enable system/com.openssh.sshd
+if ! launchctl print system/com.openssh.sshd >/dev/null 2>&1; then
+	sudo launchctl bootstrap system /System/Library/LaunchDaemons/ssh.plist
 fi
