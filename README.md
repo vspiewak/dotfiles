@@ -14,7 +14,7 @@ It asks for your password once, then runs unattended: [Homebrew](https://brew.sh
 The dotfiles set up:
 
 - [Tailscale](https://tailscale.com) as a system daemon, so the machine is on the tailnet at boot, before anyone logs in, with the same device name as the Mac's hostname; your user can run `tailscale up` / `tailscale down` without sudo
-- SSH (Remote Login) with keys only (`~/.ssh/authorized_keys`), no password logins
+- SSH (Remote Login) with keys only (`~/.ssh/authorized_keys`), no password logins, and only from Tailscale and private networks (home LAN), not from the internet
 - [herdr](https://herdr.dev), so the machine can be used as a herdr SSH machine
 - Touch ID for `sudo` (on a Mac mini, with a Touch ID keyboard)
 - CLI tools and apps from Homebrew, listed in [`install-packages.sh`](home/.chezmoiscripts/run_onchange_before_install-packages.sh)
@@ -30,7 +30,7 @@ One manual step per machine, to join the tailnet (it signs in through a browser,
 tailscale up
 ```
 
-To use it as a herdr machine, from the herdr client (e.g. the MacBook): `herdr machine add <user>@<hostname> --label <hostname>`.
+To use it as a herdr machine, from the herdr client (e.g. the MacBook), with its Tailscale name (works at home and away): `herdr machine add <user>@<hostname>.<tailnet>.ts.net --label <hostname>`. At home without Tailscale: `ssh -4 <user>@<hostname>.local`.
 
 `dotfiles.vspiewak.com` is GitHub Pages serving [`install.sh`](install.sh), published by [`pages.yml`](.github/workflows/pages.yml).
 

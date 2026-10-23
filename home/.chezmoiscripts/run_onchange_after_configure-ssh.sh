@@ -8,6 +8,13 @@ PasswordAuthentication no
 KbdInteractiveAuthentication no
 EOF
 
+# logins only from Tailscale and private networks (home LAN, link-local), not
+# from the internet, e.g. through the Mac's public IPv6 (launchd listens on all
+# addresses, so sshd's ListenAddress can't limit it)
+sudo tee /etc/ssh/sshd_config.d/10-private-networks-only.conf >/dev/null <<'EOF'
+AllowUsers *@100.64.0.0/10 *@fd7a:115c:a1e0::/48 *@10.0.0.0/8 *@172.16.0.0/12 *@192.168.0.0/16 *@fc00::/7 *@fe80::/10
+EOF
+
 # Remote Login, as the System Settings toggle (after the keys-only config, so it
 # never accepts passwords); unlike systemsetup, no Full Disk Access needed
 sudo launchctl enable system/com.openssh.sshd
