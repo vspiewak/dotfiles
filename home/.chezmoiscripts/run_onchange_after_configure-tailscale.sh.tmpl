@@ -17,5 +17,5 @@ until sudo tailscale set --operator="$(id -un)" --hostname="{{ .hostname }}" 2>/
 done
 
 if ! tailscale status >/dev/null 2>&1; then
-	echo "Tailscale: run 'sudo tailscale up' to log in"
+	echo "Tailscale: run 'tailscale up' to log in"
 fi

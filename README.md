@@ -24,13 +24,13 @@ The dotfiles set up:
 - [Ghostty](https://ghostty.org) theme and font settings, in [`config`](home/dot_config/ghostty/config)
 - VS Code extensions, listed in [`configure-vscode.sh`](home/.chezmoiscripts/run_onchange_after_configure-vscode.sh)
 
-One manual step, to log in to the tailnet:
+One manual step per machine, to join the tailnet (it signs in through a browser, so chezmoi can't do it; the login then stays across reboots and updates):
 
 ```sh
-sudo tailscale up
+tailscale up
 ```
 
-Then from another machine: `herdr machine add <user>@<hostname> --label <hostname>`.
+To use it as a herdr machine, from the herdr client (e.g. the MacBook): `herdr machine add <user>@<hostname> --label <hostname>`.
 
 `dotfiles.vspiewak.com` is GitHub Pages serving [`install.sh`](install.sh), published by [`pages.yml`](.github/workflows/pages.yml).
 
