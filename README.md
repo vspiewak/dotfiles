@@ -48,3 +48,5 @@ ssh-key-sync
 ```sh
 chezmoi update
 ```
+
+It asks for your password up front, and only when a script that needs sudo is about to run.
