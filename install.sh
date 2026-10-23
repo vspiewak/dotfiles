@@ -6,8 +6,6 @@
 #
 # Homebrew's installer also installs the Xcode Command Line Tools.
 
-HOMEBREW_INSTALL_URL=https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh
-
 # everything runs from main() so a truncated download never runs half a script
 main() {
 	set -eu
@@ -17,9 +15,22 @@ main() {
 		exit 1
 	fi
 
+	# when piped into sh, stdin is this script: sudo and Homebrew need the terminal
+	if ! (: </dev/tty) 2>/dev/null; then
+		echo "error: run this from a terminal, it needs your password" >&2
+		exit 1
+	fi
+
+	# ask for the password once, then keep sudo alive until this script exits
+	sudo -v -p "Password (asked once for the whole install): "
+	while kill -0 $$ 2>/dev/null; do
+		sudo -n true
+		sleep 60
+	done 2>/dev/null &
+
 	installed_homebrew=false
 	if ! command -v brew >/dev/null 2>&1 && [ ! -x /opt/homebrew/bin/brew ]; then
-		install_homebrew
+		/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)" </dev/tty
 		installed_homebrew=true
 	fi
 
@@ -39,17 +50,6 @@ main() {
 	if [ "$installed_homebrew" = true ]; then
 		echo "Skip Homebrew's \"Next steps\" above: chezmoi already manages ~/.zprofile."
 	fi
-}
-
-install_homebrew() {
-	# when piped into sh, stdin is this script: Homebrew needs the terminal to ask for sudo
-	if ! (: </dev/tty) 2>/dev/null; then
-		echo "error: no terminal to install Homebrew from, install it first:" >&2
-		echo "  /bin/bash -c \"\$(curl -fsSL $HOMEBREW_INSTALL_URL)\"" >&2
-		exit 1
-	fi
-
-	/bin/bash -c "$(curl -fsSL "$HOMEBREW_INSTALL_URL")" </dev/tty
 }
 
 main "$@"
