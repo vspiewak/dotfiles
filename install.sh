@@ -21,6 +21,20 @@ main() {
 		exit 1
 	fi
 
+	# questions first, so the rest runs unattended (chezmoi remembers the answers)
+	hostname_answer=
+	if ! grep -qs '^ *hostname *=' "$HOME/.config/chezmoi/chezmoi.toml"; then
+		printf 'Hostname [%s]: ' "$(hostname -s)"
+		read -r hostname_answer </dev/tty
+		hostname_answer=${hostname_answer:-$(hostname -s)}
+		case $hostname_answer in
+		*[!A-Za-z0-9-]*)
+			echo "error: hostname: letters, digits and hyphens only" >&2
+			exit 1
+			;;
+		esac
+	fi
+
 	# ask for the password once, then keep sudo alive until this script exits
 	sudo -v -p "Password (asked once for the whole install): "
 	while kill -0 $$ 2>/dev/null; do
@@ -45,10 +59,18 @@ main() {
 		brew install chezmoi
 	fi
 
-	# init only clones on the first run; update pulls the latest, regenerates the
-	# config from its template (asks new questions, e.g. hostname) and applies
-	chezmoi init vspiewak
-	chezmoi update --init
+	# answers go to chezmoi's config template instead of it prompting
+	# (--promptString matches the prompt text in home/.chezmoi.toml.tmpl)
+	set --
+	if [ -n "$hostname_answer" ]; then
+		set -- --promptString "Hostname=$hostname_answer"
+	fi
+
+	# init only clones on the first run; pull the latest, then regenerate the
+	# config from its template and apply
+	chezmoi init "$@" vspiewak
+	chezmoi update --apply=false
+	chezmoi init "$@" --apply
 
 	echo
 	echo "Done. Open a new terminal to load the new environment."
