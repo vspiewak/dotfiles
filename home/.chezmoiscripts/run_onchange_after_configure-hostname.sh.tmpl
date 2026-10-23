@@ -1,0 +1,8 @@
+#!/bin/sh
+set -eu
+
+# as in System Settings > General > Sharing (hostname is asked once by chezmoi init)
+sudo scutil --set ComputerName "{{ .hostname }}"
+sudo scutil --set HostName "{{ .hostname }}"
+sudo scutil --set LocalHostName "{{ .hostname }}"
+sudo defaults write /Library/Preferences/SystemConfiguration/com.apple.smb.server NetBIOSName -string "{{ .hostname }}"

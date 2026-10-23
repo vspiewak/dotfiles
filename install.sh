@@ -45,9 +45,10 @@ main() {
 		brew install chezmoi
 	fi
 
-	# init only clones on the first run, update pulls the latest and applies
+	# init only clones on the first run; update pulls the latest, regenerates the
+	# config from its template (asks new questions, e.g. hostname) and applies
 	chezmoi init vspiewak
-	chezmoi update
+	chezmoi update --init
 
 	echo
 	echo "Done. Open a new terminal to load the new environment."
