@@ -1,81 +1,49 @@
-# dotfiles
+# 🍎 dotfiles
 
-My macOS setup, managed with [chezmoi](https://www.chezmoi.io).
-The previous MacBook setup lives on the [`legacy`](https://github.com/vspiewak/dotfiles/tree/legacy) branch.
+> My Macs, set up in one command with [chezmoi](https://www.chezmoi.io) and [Homebrew](https://brew.sh). Agents run on the Mac mini, driven over SSH with [herdr](https://herdr.dev).
 
-## Install
+## 🚀 Setup
 
 ```sh
+# 1. install: asks your password once, then runs unattended (over SSH: ssh -t)
 curl -fsSL dotfiles.vspiewak.com | sh
-```
 
-It asks for your password once, then runs unattended: [Homebrew](https://brew.sh) if missing (which also installs the Xcode Command Line Tools), chezmoi, then the dotfiles. Open a new terminal when it's done. Over SSH, use `ssh -t` so it has a terminal for the password prompt.
-
-The dotfiles set up:
-
-- [Tailscale](https://tailscale.com) as a system daemon, so the machine is on the tailnet at boot, before anyone logs in, with the same device name as the Mac's hostname; your user can run `tailscale up` / `tailscale down` without sudo
-- SSH (Remote Login) with keys only (`~/.ssh/authorized_keys`), no password logins, and only from Tailscale and private networks (home LAN), not from the internet
-- [herdr](https://herdr.dev), so the machine can be used as a herdr SSH machine
-- Touch ID for `sudo` (on a Mac mini, with a Touch ID keyboard)
-- CLI tools and apps from Homebrew, listed in [`install-packages.sh`](home/.chezmoiscripts/run_onchange_before_install-packages.sh)
-- [Starship](https://starship.rs) prompt for zsh, configured in [`starship.toml`](home/dot_config/starship.toml)
-- Git name and email, in [`~/.config/git/config`](home/dot_config/git/config.tmpl)
-- Repo folders: `~/Dev/github` (personal) and `~/Dev/sephoraeme` (work account, see below)
-- [Ghostty](https://ghostty.org) theme and font settings, in [`config`](home/dot_config/ghostty/config)
-- VS Code extensions, listed in [`configure-vscode.sh`](home/.chezmoiscripts/run_onchange_after_configure-vscode.sh)
-
-One manual step per machine, to join the tailnet (it signs in through a browser, so chezmoi can't do it; the login then stays across reboots and updates):
-
-```sh
+# 2. in a new terminal, join the tailnet (browser sign-in, kept across reboots)
 tailscale up
-```
 
-To use it as a herdr machine, from the herdr client (e.g. the MacBook), with its Tailscale name (works at home and away): `herdr machine add <user>@<hostname>.<tailnet>.ts.net --label <hostname>`. At home without Tailscale: `ssh -4 <user>@<hostname>.local`.
-
-`dotfiles.vspiewak.com` is GitHub Pages serving [`install.sh`](install.sh), published by [`pages.yml`](.github/workflows/pages.yml).
-
-## SSH keys
-
-On a new machine, run once:
-
-```sh
+# 3. this Mac's SSH key: on GitHub (push, signing) and in authorized_keys
 ssh-key-sync
-```
 
-[It](home/dot_local/bin/executable_ssh-key-sync) creates `~/.ssh/id_ed25519` (named after the hostname) if missing, adds it to GitHub as an authentication and a signing key, adds GitHub's host keys to `~/.ssh/known_hosts` (so `git` over SSH never asks, e.g. for agents), and commits it to [`authorized_keys`](home/private_dot_ssh/authorized_keys). The other machines get it with `chezmoi update`, so they can all SSH into each other. Git signs commits once the key exists.
-
-It asks to log in to GitHub each time, with a throwaway `gh` login that can manage SSH keys and is deleted at the end.
-
-## gh for agents
-
-Where agents run (over SSH, e.g. in herdr), log in `gh` once, with the default scopes:
-
-```sh
+# 4. gh for agents (at the Mac's own keyboard, --insecure-storage isn't needed)
 gh auth login --hostname github.com --git-protocol ssh --skip-ssh-key --web --insecure-storage
-```
 
-Over SSH, macOS doesn't let `gh` read the Keychain, so the token is saved in `~/.config/gh/hosts.yml` (readable only by you, encrypted at rest by FileVault).
+# 5. work account: same, logged in to github.com as vspiewak-sephoraeme,
+#    then authorize the new key for SAML SSO (github.com/settings/keys > Configure SSO)
+ssh-key-sync sephoraeme
+cd ~/Dev/sephoraeme && gh auth login --hostname github.com --git-protocol ssh --skip-ssh-key --web --insecure-storage
 
-## Work account
+# 6. from the herdr client (e.g. the MacBook)
+herdr machine add <user>@<hostname>.<tailnet>.ts.net --label <hostname>
 
-Repos under `~/Dev/sephoraeme/` use the work GitHub account (`vspiewak-sephoraeme`): git takes its email, signing key and SSH key from [`sephoraeme.config`](home/dot_config/git/sephoraeme.config.tmpl), and a [`gh` wrapper](home/dot_local/bin/executable_gh) picks the work login there. Each account has its own `gh` config, so there's no `gh auth switch` changing the account for every shell (e.g. agents in other herdr panes).
-
-Once per machine, logged in to github.com as the work account in the browser:
-
-```sh
-ssh-key-sync sephoraeme   # ~/.ssh/sephoraeme, on the work account only
-cd ~/Dev/sephoraeme      # created by chezmoi
-gh auth login --hostname github.com --git-protocol ssh --skip-ssh-key --web --insecure-storage
-```
-
-The `sephoraeme` organization enforces SAML SSO: at github.com/settings/keys (as the work account), **Configure SSO** on the new authentication key and authorize it for `sephoraeme`; if `gh` then reports a SAML error, open the link it prints to authorize its token too.
-
-Another account, `<name>` for repos under `~/Dev/<name>/`: copy `sephoraeme.config.tmpl` (and its email in `.chezmoitemplates`), add its `includeIf` to the git config, and a line for it in `ssh-key-sync` and the `gh` wrapper.
-
-## Update
-
-```sh
+# later, to update (asks your password once)
 chezmoi update
 ```
 
-It asks for your password once, up front, then runs unattended.
+## ✨ What you get
+
+- 📦 **Homebrew**: CLI tools and apps, listed in [`install-packages.sh`](home/.chezmoiscripts/run_onchange_before_install-packages.sh)
+- 🔒 **Tailscale**: system daemon, on the tailnet at boot, named after the hostname, `tailscale up`/`down` without sudo
+- 🔑 **SSH**: Remote Login with keys only, from Tailscale and private networks only (not the internet)
+- 👆 **Touch ID** for `sudo` (on a Mac mini: with a Touch ID keyboard)
+- 🐚 **zsh**: [Starship](https://starship.rs) prompt, completion, per-pane history, emacs keys
+- 👻 **Ghostty**: Catppuccin Frappe, no ligatures, its terminfo installed on SSH hosts
+- 🧩 **VS Code** extensions, listed in [`configure-vscode.sh`](home/.chezmoiscripts/run_onchange_after_configure-vscode.sh)
+- 🌿 **git**: signed commits, personal repos in `~/Dev/github`, work repos in `~/Dev/sephoraeme`
+
+## 📝 Notes
+
+- **Accounts by folder**: under `~/Dev/sephoraeme/`, git uses the work email, signing key and SSH key ([`sephoraeme.config`](home/dot_config/git/sephoraeme.config.tmpl)), and a [`gh` wrapper](home/dot_local/bin/executable_gh) uses the work login. No `gh auth switch`, so agents in different herdr panes never flip each other's account. Another account `<name>`: copy `sephoraeme.config.tmpl` and its email template, add its `includeIf`, and a line in `ssh-key-sync` and the `gh` wrapper.
+- **[`ssh-key-sync`](home/dot_local/bin/executable_ssh-key-sync)** creates `~/.ssh/id_ed25519` (or `~/.ssh/<account>`), adds it to GitHub through a throwaway `gh` login (asked each run, deleted after), adds GitHub's host keys to `known_hosts`, and commits a personal key to [`authorized_keys`](home/private_dot_ssh/authorized_keys): the other machines get it with `chezmoi update`.
+- **gh over SSH**: macOS keeps the Keychain from SSH sessions, so the agents' tokens are in `~/.config/gh*/hosts.yml` (yours only, encrypted at rest by FileVault).
+- **At home without Tailscale**: `ssh -4 <user>@<hostname>.local`.
+- `dotfiles.vspiewak.com` is GitHub Pages serving [`install.sh`](install.sh) ([`pages.yml`](.github/workflows/pages.yml)). The previous MacBook setup is on [`legacy`](https://github.com/vspiewak/dotfiles/tree/legacy).
