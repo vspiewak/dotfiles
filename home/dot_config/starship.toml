@@ -1,0 +1,27 @@
+# config schema
+"$schema" = 'https://starship.rs/config-schema.json'
+
+[line_break]
+# prompt on a single line
+disabled = true
+
+[character]
+success_symbol = '[➜](bold green)'
+error_symbol = '[✗](bold red)'
+
+[directory]
+# no path truncation
+truncation_length = 100
+truncate_to_repo = false
+
+[aws]
+disabled = true
+
+[gcloud]
+disabled = true
+
+[openstack]
+disabled = true
+
+[azure]
+disabled = true

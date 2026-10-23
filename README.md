@@ -18,6 +18,7 @@ The dotfiles set up:
 - [herdr](https://herdr.dev), so the machine can be used as a herdr SSH machine
 - Touch ID for `sudo` (on a Mac mini, with a Touch ID keyboard)
 - CLI tools and apps from Homebrew, listed in [`install-packages.sh`](home/.chezmoiscripts/run_onchange_before_install-packages.sh)
+- [Starship](https://starship.rs) prompt for zsh, configured in [`starship.toml`](home/dot_config/starship.toml)
 - VS Code extensions, listed in [`configure-vscode.sh`](home/.chezmoiscripts/run_onchange_after_configure-vscode.sh)
 
 Two one-time manual steps:
