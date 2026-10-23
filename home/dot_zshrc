@@ -17,5 +17,8 @@ export EDITOR=vim
 # starts with EDITOR=vim already set, as in herdr panes
 bindkey -e
 
+# completion, including Homebrew's (brew shellenv in .zprofile adds them to fpath)
+autoload -Uz compinit && compinit
+
 # starship prompt
 command -v starship >/dev/null && eval "$(starship init zsh)"
