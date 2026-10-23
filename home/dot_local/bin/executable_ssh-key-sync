@@ -16,11 +16,15 @@ if [ ! -f "$key" ]; then
 fi
 pub=$(cut -d' ' -f1,2 "$key.pub")
 
-# gh, with the scopes to add SSH keys (logs in the first time)
-if ! gh auth status --json hosts --jq '.hosts[][] | select(.active) | .scopes' 2>/dev/null | grep -q ssh_signing_key; then
-	gh auth login --hostname github.com --git-protocol ssh --skip-ssh-key --web \
-		--scopes admin:public_key,admin:ssh_signing_key </dev/tty
-fi
+# a throwaway gh login, only for this script: its scopes can manage my SSH keys,
+# which the gh login agents use shouldn't. It's saved here, not in the Keychain,
+# deleted at the end, and its token expires (when GitHub issues expiring ones)
+GH_CONFIG_DIR=$(mktemp -d)
+export GH_CONFIG_DIR
+trap 'rm -rf "$GH_CONFIG_DIR"' EXIT
+trap 'exit 1' INT TERM
+gh auth login --hostname github.com --skip-ssh-key --web --insecure-storage --expiring \
+	--scopes admin:public_key,admin:ssh_signing_key </dev/tty
 
 # both skip a key already on GitHub
 gh ssh-key add "$key.pub" --type authentication --title "$name"

@@ -39,7 +39,19 @@ On a new machine, run once:
 ssh-key-sync
 ```
 
-[It](home/dot_local/bin/executable_ssh-key-sync) creates `~/.ssh/id_ed25519` (named after the hostname) if missing, adds it to GitHub as an authentication and a signing key (logging in with `gh` the first time), and commits it to [`authorized_keys`](home/private_dot_ssh/authorized_keys). The other machines get it with `chezmoi update`, so they can all SSH into each other. Git signs commits once the key exists.
+[It](home/dot_local/bin/executable_ssh-key-sync) creates `~/.ssh/id_ed25519` (named after the hostname) if missing, adds it to GitHub as an authentication and a signing key, and commits it to [`authorized_keys`](home/private_dot_ssh/authorized_keys). The other machines get it with `chezmoi update`, so they can all SSH into each other. Git signs commits once the key exists.
+
+It asks to log in to GitHub each time, with a throwaway `gh` login that can manage SSH keys and is deleted at the end.
+
+## gh for agents
+
+Where agents run (over SSH, e.g. in herdr), log in `gh` once, with the default scopes:
+
+```sh
+gh auth login --git-protocol ssh --skip-ssh-key --insecure-storage
+```
+
+Over SSH, macOS doesn't let `gh` read the Keychain, so the token is saved in `~/.config/gh/hosts.yml` (readable only by you, encrypted at rest by FileVault).
 
 `dotfiles.vspiewak.com` is GitHub Pages serving [`install.sh`](install.sh), published by [`pages.yml`](.github/workflows/pages.yml).
 
