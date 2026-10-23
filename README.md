@@ -68,6 +68,8 @@ cd ~/Dev/sephoraeme      # created by chezmoi
 gh auth login --hostname github.com --git-protocol ssh --skip-ssh-key --web --insecure-storage
 ```
 
+The `sephoraeme` organization enforces SAML SSO: at github.com/settings/keys (as the work account), **Configure SSO** on the new authentication key and authorize it for `sephoraeme`; if `gh` then reports a SAML error, open the link it prints to authorize its token too.
+
 Another account, `<name>` for repos under `~/Dev/<name>/`: copy `sephoraeme.config.tmpl` (and its email in `.chezmoitemplates`), add its `includeIf` to the git config, and a line for it in `ssh-key-sync` and the `gh` wrapper.
 
 ## Update
