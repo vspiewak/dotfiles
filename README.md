@@ -29,7 +29,7 @@ One manual step, to log in to the tailnet:
 sudo tailscale up
 ```
 
-Then from another machine: `herdr machine add vspiewak@<hostname> --label <hostname>`.
+Then from another machine: `herdr machine add <user>@<hostname> --label <hostname>`.
 
 ## SSH keys
 
