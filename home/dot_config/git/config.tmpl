@@ -16,6 +16,10 @@
 	gpgsign = true
 {{- end }}
 
+# work repos: work account's email, signing key and SSH key
+[includeIf "gitdir:~/Dev/sephoraeme/"]
+	path = ~/.config/git/sephoraeme.config
+
 # as written by `git lfs install`
 [filter "lfs"]
 	clean = git-lfs clean -- %f

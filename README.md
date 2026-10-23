@@ -55,6 +55,18 @@ gh auth login --hostname github.com --git-protocol ssh --skip-ssh-key --web --in
 
 Over SSH, macOS doesn't let `gh` read the Keychain, so the token is saved in `~/.config/gh/hosts.yml` (readable only by you, encrypted at rest by FileVault).
 
+## Work account
+
+Repos under `~/Dev/sephoraeme/` use the work GitHub account (`vspiewak-sephoraeme`): git takes its email, signing key and SSH key from [`sephoraeme.config`](home/dot_config/git/sephoraeme.config.tmpl), and a [`gh` wrapper](home/dot_local/bin/executable_gh) picks the work login there. Each account has its own `gh` config, so there's no `gh auth switch` changing the account for every shell (e.g. agents in other herdr panes).
+
+Once per machine, logged in to github.com as the work account in the browser:
+
+```sh
+ssh-key-sync work      # ~/.ssh/sephoraeme, on the work account only
+mkdir -p ~/Dev/sephoraeme && cd ~/Dev/sephoraeme
+gh auth login --hostname github.com --git-protocol ssh --skip-ssh-key --web --insecure-storage
+```
+
 ## Update
 
 ```sh

@@ -1,0 +1,14 @@
+#!/bin/sh
+#
+# gh as my work account (vspiewak-sephoraeme) under ~/Dev/sephoraeme/, my
+# personal one elsewhere: each has its own config dir, so no `gh auth switch`
+# changes the account for every other shell (e.g. agents in other herdr panes).
+# An explicit GH_CONFIG_DIR wins.
+
+case $PWD/ in
+"$HOME"/Dev/sephoraeme/*)
+	: "${GH_CONFIG_DIR:=$HOME/.config/gh-sephoraeme}"
+	export GH_CONFIG_DIR
+	;;
+esac
+exec /opt/homebrew/bin/gh "$@"

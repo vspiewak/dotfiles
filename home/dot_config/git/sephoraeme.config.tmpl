@@ -1,0 +1,18 @@
+{{- $key := joinPath .chezmoi.homeDir ".ssh/sephoraeme.pub" -}}
+# work repos, under ~/Dev/sephoraeme/ (included by ~/.config/git/config)
+[user]
+	email = {{ template "email_sephoraeme" }}
+{{- if stat $key }}
+	signingkey = ~/.ssh/sephoraeme.pub
+{{- else }}
+
+# no work key yet (ssh-key-sync work): don't sign with the personal one
+[commit]
+	gpgsign = false
+[tag]
+	gpgsign = false
+{{- end }}
+
+# push and pull as the work account
+[core]
+	sshCommand = ssh -i ~/.ssh/sephoraeme -o IdentitiesOnly=yes

@@ -3,11 +3,21 @@
 # Gives this machine an SSH key, on GitHub (push, signed commits) and in the
 # dotfiles' authorized_keys, so my machines can SSH into each other. Run it once
 # on a new machine; the others get its key with `chezmoi update`.
+#
+# `ssh-key-sync work` does the same for the work account: ~/.ssh/sephoraeme,
+# used by git under ~/Dev/sephoraeme/, only on GitHub (not in authorized_keys).
 
 set -eu
 
 name=$(hostname -s)
-key=$HOME/.ssh/id_ed25519
+case ${1:-} in
+"") account=vspiewak key=$HOME/.ssh/id_ed25519 ;;
+work) account=vspiewak-sephoraeme key=$HOME/.ssh/sephoraeme ;;
+*)
+	echo "usage: ssh-key-sync [work]" >&2
+	exit 2
+	;;
+esac
 
 # no passphrase: agents in herdr panes over SSH couldn't type it (FileVault
 # protects it on disk)
@@ -23,8 +33,13 @@ GH_CONFIG_DIR=$(mktemp -d)
 export GH_CONFIG_DIR
 trap 'rm -rf "$GH_CONFIG_DIR"' EXIT
 trap 'exit 1' INT TERM
+echo "GitHub: log in as $account"
 gh auth login --hostname github.com --git-protocol ssh --skip-ssh-key --web --insecure-storage --expiring \
 	--scopes admin:public_key,admin:ssh_signing_key </dev/tty
+if [ "$(gh api user --jq .login)" != "$account" ]; then
+	echo "error: logged in to GitHub as another account than $account" >&2
+	exit 1
+fi
 
 # both skip a key already on GitHub
 gh ssh-key add "$key.pub" --type authentication --title "$name"
@@ -35,9 +50,12 @@ if ! ssh-keygen -F github.com -f "$HOME/.ssh/known_hosts" >/dev/null 2>&1; then
 	gh api meta --jq '.ssh_keys[] | "github.com " + .' >>"$HOME/.ssh/known_hosts"
 fi
 
-# this machine's line in the dotfiles' authorized_keys, replacing an old one
-# (chezmoi update also turns on commit signing, now that the key exists)
+# turns on commit signing, now that the key exists
 chezmoi update
+
+# this machine's line in the dotfiles' authorized_keys, replacing an old one
+# (not the work key: it's only for GitHub)
+[ "$account" = vspiewak ] || exit 0
 keys=$(chezmoi source-path "$HOME/.ssh/authorized_keys")
 if ! grep -qF "$pub" "$keys"; then
 	{
