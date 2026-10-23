@@ -17,7 +17,7 @@ main() {
 
 	# when piped into sh, stdin is this script: sudo and Homebrew need the terminal
 	if ! (: </dev/tty) 2>/dev/null; then
-		echo "error: run this from a terminal, it needs your password" >&2
+		echo "error: run this from a terminal (over SSH: ssh -t), it needs your password" >&2
 		exit 1
 	fi
 
@@ -30,7 +30,9 @@ main() {
 
 	installed_homebrew=false
 	if ! command -v brew >/dev/null 2>&1 && [ ! -x /opt/homebrew/bin/brew ]; then
-		/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)" </dev/tty
+		# no "Press RETURN", sudo is already cached; the terminal stays attached for
+		# Homebrew's Command Line Tools GUI fallback
+		NONINTERACTIVE=1 /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)" </dev/tty
 		installed_homebrew=true
 	fi
 
