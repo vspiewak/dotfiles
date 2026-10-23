@@ -49,4 +49,4 @@ ssh-key-sync
 chezmoi update
 ```
 
-It asks for your password up front, and only when a script that needs sudo is about to run.
+It asks for your password once, up front, then runs unattended.
