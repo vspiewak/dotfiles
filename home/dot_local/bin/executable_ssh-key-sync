@@ -1,0 +1,43 @@
+#!/bin/sh
+#
+# Gives this machine an SSH key, on GitHub (push, signed commits) and in the
+# dotfiles' authorized_keys, so my machines can SSH into each other. Run it once
+# on a new machine; the others get its key with `chezmoi update`.
+
+set -eu
+
+name=$(hostname -s)
+key=$HOME/.ssh/id_ed25519
+
+# no passphrase: agents in herdr panes over SSH couldn't type it (FileVault
+# protects it on disk)
+if [ ! -f "$key" ]; then
+	ssh-keygen -q -t ed25519 -N "" -C "$name" -f "$key"
+fi
+pub=$(cut -d' ' -f1,2 "$key.pub")
+
+# gh, with the scopes to add SSH keys (logs in the first time)
+if ! gh auth status --json hosts --jq '.hosts[][] | select(.active) | .scopes' 2>/dev/null | grep -q ssh_signing_key; then
+	gh auth login --hostname github.com --git-protocol ssh --skip-ssh-key --web \
+		--scopes admin:public_key,admin:ssh_signing_key </dev/tty
+fi
+
+# both skip a key already on GitHub
+gh ssh-key add "$key.pub" --type authentication --title "$name"
+gh ssh-key add "$key.pub" --type signing --title "$name"
+
+# this machine's line in the dotfiles' authorized_keys, replacing an old one
+# (chezmoi update also turns on commit signing, now that the key exists)
+chezmoi update
+keys=$(chezmoi source-path "$HOME/.ssh/authorized_keys")
+if ! grep -qF "$pub" "$keys"; then
+	{
+		grep -v " $name\$" "$keys" || true
+		echo "$pub $name"
+	} >"$keys.new"
+	mv "$keys.new" "$keys"
+	chezmoi git -- commit -m "Set $name SSH key" -- "$keys"
+	# with gh's login: the dotfiles are cloned over HTTPS
+	chezmoi git -- -c credential.helper= -c 'credential.helper=!gh auth git-credential' push
+	chezmoi apply
+fi

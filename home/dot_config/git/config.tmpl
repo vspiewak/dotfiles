@@ -1,7 +1,20 @@
+{{- $key := joinPath .chezmoi.homeDir ".ssh/id_ed25519.pub" -}}
 [user]
 	name = Vincent Spiewak
-	{{- /* hex-encoded (as on legacy), to keep it from scrapers of this public repo */}}
-	email = {{ "767370696577616b40676d61696c2e636f6d" | hexDecode }}
+	email = {{ template "email" }}
+{{- if stat $key }}
+	signingkey = ~/.ssh/id_ed25519.pub
+
+# sign commits and tags with the SSH key (from ssh-key-sync, also on GitHub)
+[gpg]
+	format = ssh
+[gpg "ssh"]
+	allowedSignersFile = ~/.config/git/allowed_signers
+[commit]
+	gpgsign = true
+[tag]
+	gpgsign = true
+{{- end }}
 
 # as written by `git lfs install`
 [filter "lfs"]

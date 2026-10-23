@@ -1,0 +1,2 @@
+{{- /* hex-encoded (as on legacy), to keep it from scrapers of this public repo */ -}}
+{{- "767370696577616b40676d61696c2e636f6d" | hexDecode -}}

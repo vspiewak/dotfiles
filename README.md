@@ -31,6 +31,16 @@ sudo tailscale up
 
 Then from another machine: `herdr machine add vspiewak@<hostname> --label <hostname>`.
 
+## SSH keys
+
+On a new machine, run once:
+
+```sh
+ssh-key-sync
+```
+
+[It](home/dot_local/bin/executable_ssh-key-sync) creates `~/.ssh/id_ed25519` (named after the hostname) if missing, adds it to GitHub as an authentication and a signing key (logging in with `gh` the first time), and commits it to [`authorized_keys`](home/private_dot_ssh/authorized_keys). The other machines get it with `chezmoi update`, so they can all SSH into each other. Git signs commits once the key exists.
+
 `dotfiles.vspiewak.com` is GitHub Pages serving [`install.sh`](install.sh), published by [`pages.yml`](.github/workflows/pages.yml).
 
 ## Update
