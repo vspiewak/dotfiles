@@ -15,6 +15,7 @@ The dotfiles set up:
 
 - [Tailscale](https://tailscale.com) as a system daemon, so the machine is on the tailnet at boot, before anyone logs in, with the same device name as the Mac's hostname; your user can run `tailscale up` / `tailscale down` without sudo
 - SSH (Remote Login) with keys only (`~/.ssh/authorized_keys`), no password logins
+- GitHub's SSH host keys in [`~/.ssh/known_hosts2`](home/private_dot_ssh/known_hosts2), so `git` over SSH never asks to confirm them (e.g. agents)
 - [herdr](https://herdr.dev), so the machine can be used as a herdr SSH machine
 - Touch ID for `sudo` (on a Mac mini, with a Touch ID keyboard)
 - CLI tools and apps from Homebrew, listed in [`install-packages.sh`](home/.chezmoiscripts/run_onchange_before_install-packages.sh)
