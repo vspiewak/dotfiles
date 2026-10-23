@@ -15,7 +15,6 @@ The dotfiles set up:
 
 - [Tailscale](https://tailscale.com) as a system daemon, so the machine is on the tailnet at boot, before anyone logs in, with the same device name as the Mac's hostname; your user can run `tailscale up` / `tailscale down` without sudo
 - SSH (Remote Login) with keys only (`~/.ssh/authorized_keys`), no password logins
-- GitHub's SSH host keys in [`~/.ssh/known_hosts2`](home/private_dot_ssh/known_hosts2), so `git` over SSH never asks to confirm them (e.g. agents)
 - [herdr](https://herdr.dev), so the machine can be used as a herdr SSH machine
 - Touch ID for `sudo` (on a Mac mini, with a Touch ID keyboard)
 - CLI tools and apps from Homebrew, listed in [`install-packages.sh`](home/.chezmoiscripts/run_onchange_before_install-packages.sh)
@@ -42,7 +41,7 @@ On a new machine, run once:
 ssh-key-sync
 ```
 
-[It](home/dot_local/bin/executable_ssh-key-sync) creates `~/.ssh/id_ed25519` (named after the hostname) if missing, adds it to GitHub as an authentication and a signing key, and commits it to [`authorized_keys`](home/private_dot_ssh/authorized_keys). The other machines get it with `chezmoi update`, so they can all SSH into each other. Git signs commits once the key exists.
+[It](home/dot_local/bin/executable_ssh-key-sync) creates `~/.ssh/id_ed25519` (named after the hostname) if missing, adds it to GitHub as an authentication and a signing key, adds GitHub's host keys to `~/.ssh/known_hosts` (so `git` over SSH never asks, e.g. for agents), and commits it to [`authorized_keys`](home/private_dot_ssh/authorized_keys). The other machines get it with `chezmoi update`, so they can all SSH into each other. Git signs commits once the key exists.
 
 It asks to log in to GitHub each time, with a throwaway `gh` login that can manage SSH keys and is deleted at the end.
 

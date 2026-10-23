@@ -30,6 +30,11 @@ gh auth login --hostname github.com --git-protocol ssh --skip-ssh-key --web --in
 gh ssh-key add "$key.pub" --type authentication --title "$name"
 gh ssh-key add "$key.pub" --type signing --title "$name"
 
+# GitHub's host keys (from its API, over HTTPS), so git over SSH never asks
+if ! ssh-keygen -F github.com -f "$HOME/.ssh/known_hosts" >/dev/null 2>&1; then
+	gh api meta --jq '.ssh_keys[] | "github.com " + .' >>"$HOME/.ssh/known_hosts"
+fi
+
 # this machine's line in the dotfiles' authorized_keys, replacing an old one
 # (chezmoi update also turns on commit signing, now that the key exists)
 chezmoi update
