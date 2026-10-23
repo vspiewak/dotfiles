@@ -63,7 +63,7 @@ Once per machine, logged in to github.com as the work account in the browser:
 
 ```sh
 ssh-key-sync sephoraeme   # ~/.ssh/sephoraeme, on the work account only
-mkdir -p ~/Dev/sephoraeme && cd ~/Dev/sephoraeme
+cd ~/Dev/sephoraeme      # created by chezmoi
 gh auth login --hostname github.com --git-protocol ssh --skip-ssh-key --web --insecure-storage
 ```
 
