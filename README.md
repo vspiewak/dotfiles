@@ -31,6 +31,8 @@ sudo tailscale up
 
 Then from another machine: `herdr machine add <user>@<hostname> --label <hostname>`.
 
+`dotfiles.vspiewak.com` is GitHub Pages serving [`install.sh`](install.sh), published by [`pages.yml`](.github/workflows/pages.yml).
+
 ## SSH keys
 
 On a new machine, run once:
@@ -52,8 +54,6 @@ gh auth login --hostname github.com --git-protocol ssh --skip-ssh-key --web --in
 ```
 
 Over SSH, macOS doesn't let `gh` read the Keychain, so the token is saved in `~/.config/gh/hosts.yml` (readable only by you, encrypted at rest by FileVault).
-
-`dotfiles.vspiewak.com` is GitHub Pages serving [`install.sh`](install.sh), published by [`pages.yml`](.github/workflows/pages.yml).
 
 ## Update
 
