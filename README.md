@@ -11,6 +11,22 @@ curl -fsSL dotfiles.vspiewak.com | sh
 
 It installs [Homebrew](https://brew.sh) if missing (which also installs the Xcode Command Line Tools, and asks for your password), then chezmoi, then applies the dotfiles. Open a new terminal when it's done.
 
+The dotfiles set up:
+
+- [Tailscale](https://tailscale.com) as a system daemon, so the machine is on the tailnet at boot, before anyone logs in
+- SSH with keys only (`~/.ssh/authorized_keys`), no password logins
+- [herdr](https://herdr.dev), so the machine can be used as a herdr SSH machine
+
+Two one-time manual steps:
+
+```sh
+sudo tailscale up   # log in to the tailnet
+```
+
+and System Settings > General > Sharing > **Remote Login** on (it can't be scripted without Full Disk Access).
+
+Then from another machine: `herdr machine add vspiewak@<hostname> --label <hostname>`.
+
 `dotfiles.vspiewak.com` is GitHub Pages serving [`install.sh`](install.sh), published by [`pages.yml`](.github/workflows/pages.yml).
 
 ## Update
