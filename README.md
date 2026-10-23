@@ -17,7 +17,7 @@ The dotfiles set up:
 - SSH with keys only (`~/.ssh/authorized_keys`), no password logins
 - [herdr](https://herdr.dev), so the machine can be used as a herdr SSH machine
 - Touch ID for `sudo` (on a Mac mini, with a Touch ID keyboard)
-- CLI tools from Homebrew, listed in [`install-packages.sh`](home/.chezmoiscripts/run_onchange_before_install-packages.sh)
+- CLI tools and apps from Homebrew, listed in [`install-packages.sh`](home/.chezmoiscripts/run_onchange_before_install-packages.sh)
 
 Two one-time manual steps:
 
