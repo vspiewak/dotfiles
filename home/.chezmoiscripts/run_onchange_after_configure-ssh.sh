@@ -2,7 +2,8 @@
 set -eu
 
 # keys only (~/.ssh/authorized_keys), no password logins
-sudo tee /etc/ssh/sshd_config.d/200-keys-only.conf >/dev/null <<'EOF'
+# sshd keeps the first value it reads: sort before other drop-ins (e.g. Ubuntu's 50-cloud-init.conf)
+sudo tee /etc/ssh/sshd_config.d/10-keys-only.conf >/dev/null <<'EOF'
 PasswordAuthentication no
 KbdInteractiveAuthentication no
 EOF
