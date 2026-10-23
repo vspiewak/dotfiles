@@ -13,7 +13,7 @@ It asks for your password once, then runs unattended: [Homebrew](https://brew.sh
 
 The dotfiles set up:
 
-- [Tailscale](https://tailscale.com) as a system daemon, so the machine is on the tailnet at boot, before anyone logs in; your user can run `tailscale up` / `tailscale down` without sudo
+- [Tailscale](https://tailscale.com) as a system daemon, so the machine is on the tailnet at boot, before anyone logs in, with the same device name as the Mac's hostname; your user can run `tailscale up` / `tailscale down` without sudo
 - SSH with keys only (`~/.ssh/authorized_keys`), no password logins
 - [herdr](https://herdr.dev), so the machine can be used as a herdr SSH machine
 - Touch ID for `sudo` (on a Mac mini, with a Touch ID keyboard)
