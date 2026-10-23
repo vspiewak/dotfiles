@@ -19,6 +19,7 @@ The dotfiles set up:
 - Touch ID for `sudo` (on a Mac mini, with a Touch ID keyboard)
 - CLI tools and apps from Homebrew, listed in [`install-packages.sh`](home/.chezmoiscripts/run_onchange_before_install-packages.sh)
 - [Starship](https://starship.rs) prompt for zsh, configured in [`starship.toml`](home/dot_config/starship.toml)
+- Git name and email, in [`~/.config/git/config`](home/dot_config/git/config.tmpl)
 - [Ghostty](https://ghostty.org) theme and font settings, in [`config`](home/dot_config/ghostty/config)
 - VS Code extensions, listed in [`configure-vscode.sh`](home/.chezmoiscripts/run_onchange_after_configure-vscode.sh)
 
