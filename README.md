@@ -48,7 +48,7 @@ It asks to log in to GitHub each time, with a throwaway `gh` login that can mana
 Where agents run (over SSH, e.g. in herdr), log in `gh` once, with the default scopes:
 
 ```sh
-gh auth login --git-protocol ssh --skip-ssh-key --insecure-storage
+gh auth login --hostname github.com --git-protocol ssh --skip-ssh-key --web --insecure-storage
 ```
 
 Over SSH, macOS doesn't let `gh` read the Keychain, so the token is saved in `~/.config/gh/hosts.yml` (readable only by you, encrypted at rest by FileVault).
