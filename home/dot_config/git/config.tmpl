@@ -2,3 +2,10 @@
 	name = Vincent Spiewak
 	{{- /* hex-encoded (as on legacy), to keep it from scrapers of this public repo */}}
 	email = {{ "767370696577616b40676d61696c2e636f6d" | hexDecode }}
+
+# as written by `git lfs install`
+[filter "lfs"]
+	clean = git-lfs clean -- %f
+	smudge = git-lfs smudge -- %f
+	process = git-lfs filter-process
+	required = true
