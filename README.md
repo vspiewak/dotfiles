@@ -34,6 +34,7 @@ chezmoi update
 - 📦 **Homebrew**: CLI tools and apps, listed in [`install-packages.sh`](home/.chezmoiscripts/run_onchange_before_install-packages.sh)
 - 🔒 **Tailscale**: system daemon, on the tailnet at boot, named after the hostname, `tailscale up`/`down` without sudo
 - 🔑 **SSH**: Remote Login with keys only, from Tailscale and private networks only (not the internet)
+- ⚡ **Always on** (Macs without a battery, e.g. the Mac mini): never sleeps, restarts after a power failure
 - 👆 **Touch ID** for `sudo` (on a Mac mini: with a Touch ID keyboard)
 - 🐚 **zsh**: [Starship](https://starship.rs) prompt, completion, per-pane history, emacs keys
 - 👻 **Ghostty**: Catppuccin Frappe, no ligatures, its terminfo installed on SSH hosts
