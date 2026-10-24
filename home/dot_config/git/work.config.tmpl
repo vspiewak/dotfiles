@@ -1,0 +1,18 @@
+{{- $key := joinPath .chezmoi.homeDir ".ssh" (printf "%s.pub" .work) -}}
+# work repos, under ~/Dev/github-{{ .work }}/ (included by ~/.config/git/config)
+[user]
+	email = {{ .work_email }}
+{{- if stat $key }}
+	signingkey = ~/.ssh/{{ .work }}.pub
+{{- else }}
+
+# no work key yet (ssh-key-sync {{ .work }}): don't sign with the personal one
+[commit]
+	gpgsign = false
+[tag]
+	gpgsign = false
+{{- end }}
+
+# push and pull as the work account
+[core]
+	sshCommand = ssh -i ~/.ssh/{{ .work }} -o IdentitiesOnly=yes

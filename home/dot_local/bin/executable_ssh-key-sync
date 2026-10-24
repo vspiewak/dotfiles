@@ -4,26 +4,30 @@
 # dotfiles' authorized_keys, so my machines can SSH into each other. Run it once
 # on a new machine; the others get its key with `chezmoi update`.
 #
-# `ssh-key-sync <name>` does the same for another GitHub account: ~/.ssh/<name>,
-# used by git under ~/Dev/<name>/, only on GitHub (not in authorized_keys).
+# `ssh-key-sync <name>` does the same for my GitHub account vspiewak-<name>
+# (e.g. work): ~/.ssh/<name>, used by git and gh in ~/Dev/github-<name>/, only
+# on GitHub (not in authorized_keys).
 
 set -eu
 
-name=$(hostname -s)
-key=$HOME/.ssh/${1:-id_ed25519}
-case ${1:-} in
-"") account=vspiewak ;;
-sephoraeme) account=vspiewak-sephoraeme ;; # work
-*)
-	echo "usage: ssh-key-sync [sephoraeme]" >&2
-	exit 2
-	;;
-esac
+host=$(hostname -s)
+if [ $# -eq 0 ]; then
+	account=vspiewak key=$HOME/.ssh/id_ed25519 repos=$HOME/Dev/github
+else
+	case $1 in
+	"" | *[!a-z0-9-]*)
+		echo "usage: ssh-key-sync [<name>]" >&2
+		exit 2
+		;;
+	esac
+	account=vspiewak-$1 key=$HOME/.ssh/$1 repos=$HOME/Dev/github-$1
+fi
+mkdir -p "$repos"
 
 # no passphrase: agents in herdr panes over SSH couldn't type it (FileVault
 # protects it on disk)
 if [ ! -f "$key" ]; then
-	ssh-keygen -q -t ed25519 -N "" -C "$name" -f "$key"
+	ssh-keygen -q -t ed25519 -N "" -C "$host" -f "$key"
 fi
 pub=$(cut -d' ' -f1,2 "$key.pub")
 
@@ -43,8 +47,8 @@ if [ "$(gh api user --jq .login)" != "$account" ]; then
 fi
 
 # both skip a key already on GitHub
-gh ssh-key add "$key.pub" --type authentication --title "$name"
-gh ssh-key add "$key.pub" --type signing --title "$name"
+gh ssh-key add "$key.pub" --type authentication --title "$host"
+gh ssh-key add "$key.pub" --type signing --title "$host"
 
 # GitHub's host keys (from its API, over HTTPS), so git over SSH never asks
 if ! ssh-keygen -F github.com -f "$HOME/.ssh/known_hosts" >/dev/null 2>&1; then
@@ -52,19 +56,19 @@ if ! ssh-keygen -F github.com -f "$HOME/.ssh/known_hosts" >/dev/null 2>&1; then
 fi
 
 # turns on commit signing, now that the key exists
-chezmoi update
+chezmoi update --init
 
 # this machine's line in the dotfiles' authorized_keys, replacing an old one
 # (not another account's key: it's only for GitHub)
-[ "$account" = vspiewak ] || exit 0
+[ $# -eq 0 ] || exit 0
 keys=$(chezmoi source-path "$HOME/.ssh/authorized_keys")
 if ! grep -qF "$pub" "$keys"; then
 	{
-		grep -v " $name\$" "$keys" || true
-		echo "$pub $name"
+		grep -v " $host\$" "$keys" || true
+		echo "$pub $host"
 	} >"$keys.new"
 	mv "$keys.new" "$keys"
-	chezmoi git -- commit -m "Set $name SSH key" -- "$keys"
+	chezmoi git -- commit -m "Set $host SSH key" -- "$keys"
 	# with gh's login: the dotfiles are cloned over HTTPS
 	chezmoi git -- -c credential.helper= -c 'credential.helper=!gh auth git-credential' push
 	chezmoi apply

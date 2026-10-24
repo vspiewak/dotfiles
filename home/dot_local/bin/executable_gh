@@ -1,13 +1,15 @@
 #!/bin/sh
 #
-# gh as my work account (vspiewak-sephoraeme) under ~/Dev/sephoraeme/, my
-# personal one elsewhere: each has its own config dir, so no `gh auth switch`
-# changes the account for every other shell (e.g. agents in other herdr panes).
-# An explicit GH_CONFIG_DIR wins.
+# gh as my GitHub account vspiewak-<name> in ~/Dev/github-<name>/ (its own login,
+# in ~/.config/gh-<name>), my personal one elsewhere: no `gh auth switch`, which
+# would change the account for every other shell (e.g. agents in other herdr
+# panes). An explicit GH_CONFIG_DIR wins.
 
 case $PWD/ in
-"$HOME"/Dev/sephoraeme/*)
-	: "${GH_CONFIG_DIR:=$HOME/.config/gh-sephoraeme}"
+"$HOME"/Dev/github-*/*)
+	name=${PWD#"$HOME"/Dev/github-}
+	name=${name%%/*}
+	: "${GH_CONFIG_DIR:=$HOME/.config/gh-$name}"
 	export GH_CONFIG_DIR
 	;;
 esac

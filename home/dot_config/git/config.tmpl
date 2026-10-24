@@ -1,7 +1,7 @@
 {{- $key := joinPath .chezmoi.homeDir ".ssh/id_ed25519.pub" -}}
 [user]
 	name = Vincent Spiewak
-	email = {{ template "email" }}
+	email = {{ .email }}
 {{- if stat $key }}
 	signingkey = ~/.ssh/id_ed25519.pub
 
@@ -16,9 +16,12 @@
 	gpgsign = true
 {{- end }}
 
+{{- if .work }}
+
 # work repos: work account's email, signing key and SSH key
-[includeIf "gitdir:~/Dev/sephoraeme/"]
-	path = ~/.config/git/sephoraeme.config
+[includeIf "gitdir:~/Dev/github-{{ .work }}/"]
+	path = ~/.config/git/work.config
+{{- end }}
 
 # as written by `git lfs install`
 [filter "lfs"]

@@ -17,16 +17,16 @@ ssh-key-sync
 # 4. gh for agents (at the Mac's own keyboard, --insecure-storage isn't needed)
 gh auth login --hostname github.com --git-protocol ssh --skip-ssh-key --web --insecure-storage
 
-# 5. work account: same, logged in to github.com as vspiewak-sephoraeme,
-#    then authorize the new key for SAML SSO (github.com/settings/keys > Configure SSO)
-ssh-key-sync sephoraeme
-cd ~/Dev/sephoraeme && gh auth login --hostname github.com --git-protocol ssh --skip-ssh-key --web --insecure-storage
+# 5. work account vspiewak-<work>: same, logged in to github.com as it, then
+#    authorize the new key for SAML SSO if asked (github.com/settings/keys)
+ssh-key-sync <work>
+cd ~/Dev/github-<work> && gh auth login --hostname github.com --git-protocol ssh --skip-ssh-key --web --insecure-storage
 
 # 6. from the herdr client (e.g. the MacBook)
 herdr machine add <user>@<hostname>.<tailnet>.ts.net --label <hostname>
 
 # later, to update (asks your password once)
-chezmoi update
+chezmoi update --init
 ```
 
 ## ✨ What you get
@@ -39,12 +39,12 @@ chezmoi update
 - 🐚 **zsh**: [Starship](https://starship.rs) prompt, completion, per-pane history, emacs keys
 - 👻 **Ghostty**: Catppuccin Frappe, no ligatures, its terminfo installed on SSH hosts
 - 🧩 **VS Code** extensions, listed in [`configure-vscode.sh`](home/.chezmoiscripts/run_onchange_after_configure-vscode.sh)
-- 🌿 **git**: signed commits, personal repos in `~/Dev/github`, work repos in `~/Dev/sephoraeme`
+- 🌿 **git**: signed commits, personal repos in `~/Dev/github`, work repos in `~/Dev/github-<work>`
 
 ## 📝 Notes
 
-- **Accounts by folder**: under `~/Dev/sephoraeme/`, git uses the work email, signing key and SSH key ([`sephoraeme.config`](home/dot_config/git/sephoraeme.config.tmpl)), and a [`gh` wrapper](home/dot_local/bin/executable_gh) uses the work login. No `gh auth switch`, so agents in different herdr panes never flip each other's account. Another account `<name>`: copy `sephoraeme.config.tmpl` and its email template, add its `includeIf`, and a line in `ssh-key-sync` and the `gh` wrapper.
-- **[`ssh-key-sync`](home/dot_local/bin/executable_ssh-key-sync)** creates `~/.ssh/id_ed25519` (or `~/.ssh/<account>`), adds it to GitHub through a throwaway `gh` login (asked each run, deleted after), adds GitHub's host keys to `known_hosts`, and commits a personal key to [`authorized_keys`](home/private_dot_ssh/authorized_keys): the other machines get it with `chezmoi update`.
+- **Accounts by folder**: in `~/Dev/github-<name>/`, a [`gh` wrapper](home/dot_local/bin/executable_gh) uses the `vspiewak-<name>` login, and for the work account git uses its email, signing key and SSH key ([`work.config`](home/dot_config/git/work.config.tmpl)). No `gh auth switch`, so agents in different herdr panes never flip each other's account. The work name and emails are hex-encoded in [`.chezmoi.toml.tmpl`](home/.chezmoi.toml.tmpl): a new job is a new value there, then `ssh-key-sync <work>`.
+- **[`ssh-key-sync [<name>]`](home/dot_local/bin/executable_ssh-key-sync)** creates `~/Dev/github` (or `~/Dev/github-<name>`) and `~/.ssh/id_ed25519` (or `~/.ssh/<name>`), adds it to GitHub through a throwaway `gh` login (asked each run, deleted after), adds GitHub's host keys to `known_hosts`, and commits a personal key to [`authorized_keys`](home/private_dot_ssh/authorized_keys): the other machines get it with `chezmoi update`.
 - **gh over SSH**: macOS keeps the Keychain from SSH sessions, so the agents' tokens are in `~/.config/gh*/hosts.yml` (yours only, encrypted at rest by FileVault).
 - **At home without Tailscale**: `ssh -4 <user>@<hostname>.local`.
 - `dotfiles.vspiewak.com` is GitHub Pages serving [`install.sh`](install.sh) ([`pages.yml`](.github/workflows/pages.yml)). The previous MacBook setup is on [`legacy`](https://github.com/vspiewak/dotfiles/tree/legacy).

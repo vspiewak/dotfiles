@@ -1,4 +1,13 @@
 {{- $hostname := promptStringOnce . "hostname" "Hostname" .chezmoi.hostname -}}
+{{- /* hex-encoded (as on legacy), to keep them from scrapers of this public repo */ -}}
+{{- $email := "767370696577616b40676d61696c2e636f6d" -}}
+{{- $work := "736570686f7261656d65" -}}
+{{- $workEmail := "767370696577616b40706172746e65722e736570686f72612e6575" -}}
 
 [data]
     hostname = {{ $hostname | quote }}
+    email = {{ $email | hexDecode | quote }}
+    # work GitHub account vspiewak-<work>, its repos in ~/Dev/github-<work>/
+    # (an empty work turns the work setup off)
+    work = {{ $work | hexDecode | quote }}
+    work_email = {{ $workEmail | hexDecode | quote }}

@@ -1,6 +1,6 @@
 {{- /* my machines' keys (ssh-key-sync), for git log --show-signature */ -}}
 {{- range include "private_dot_ssh/authorized_keys" | splitList "\n" -}}
 {{-   if . -}}
-{{ template "email" }} namespaces="git" {{ . }}
+{{ $.email }} namespaces="git" {{ . }}
 {{ end -}}
 {{- end -}}
