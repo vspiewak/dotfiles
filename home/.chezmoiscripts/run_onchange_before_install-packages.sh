@@ -2,6 +2,9 @@
 set -eu
 
 brew bundle --file=/dev/stdin <<EOF
+brew "colima"
+brew "docker"
+brew "docker-compose"
 brew "ffmpeg"
 brew "gh"
 brew "git"

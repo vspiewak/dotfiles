@@ -5,5 +5,9 @@
 # runs, for every program (agents too)
 command -v mise >/dev/null && eval "$(mise activate zsh --shims)"
 
+# Docker is Colima's: its socket here, as Testcontainers ignores docker contexts
+export DOCKER_HOST=unix://$HOME/.colima/default/docker.sock
+export TESTCONTAINERS_DOCKER_SOCKET_OVERRIDE=/var/run/docker.sock
+
 # my scripts (ssh-key-sync)
 export PATH="$HOME/.local/bin:$PATH"
