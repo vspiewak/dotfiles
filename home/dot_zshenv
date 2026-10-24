@@ -1,0 +1,14 @@
+# gcloud: in a repo with its own .gcloud/ (a personal POC), gcloud and Spring use
+# that login; everywhere else ~/.config/gcloud (work). In .zshenv: every zsh reads
+# it, also the ones agents run their commands in
+_gcloud_config() {
+	local dir=$PWD
+	while [[ $dir != / && ! -d $dir/.gcloud ]]; do dir=${dir:h}; done
+	if [[ -d $dir/.gcloud ]]; then
+		export CLOUDSDK_CONFIG=$dir/.gcloud
+	else
+		unset CLOUDSDK_CONFIG
+	fi
+}
+autoload -Uz add-zsh-hook && add-zsh-hook chpwd _gcloud_config
+_gcloud_config
