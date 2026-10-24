@@ -1,10 +1,13 @@
-# the defaults: a repo's .sdkmanrc, .nvmrc (or mise.toml) picks another version
+# the defaults: a repo's .sdkmanrc, .nvmrc, .python-version (or mise.toml) picks
+# another version
 [tools]
 # JDK 25 (the default: first) and 11, named temurin-<n> as sdkman's <version>-tem
 # pins become, so they match these installs
 java = ["temurin-25", "temurin-11"]
 node = "24"
+python = "3.14"
 
 [settings]
-# read sdkman's .sdkmanrc and nvm's .nvmrc (and .java-version, .node-version)
-idiomatic_version_file_enable_tools = ["java", "node"]
+# read sdkman's .sdkmanrc, nvm's .nvmrc and pyenv's .python-version (and
+# .java-version, .node-version)
+idiomatic_version_file_enable_tools = ["java", "node", "python"]
