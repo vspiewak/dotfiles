@@ -46,7 +46,7 @@ chezmoi update --init
 - 🌿 **git**: signed commits, personal repos in `~/Dev/github`, work repos in `~/Dev/github-<work>`
 - ☁️ **gcloud**: your work login in `~/.config/gcloud`, a repo's own in its `.gcloud/` (never committed)
 - 🐳 **Docker** with [Colima](https://github.com/abiosoft/colima): `docker`, `docker compose`, Testcontainers; a VM of 8 CPUs and 16 GB, Rosetta for amd64 images, up after each login ([`configure-colima.sh`](home/.chezmoiscripts/run_onchange_after_configure-colima.sh))
-- 🤖 **Claude Code**, with its own installer, so it updates itself ([`install-claude.sh`](home/.chezmoiscripts/run_onchange_after_install-claude.sh)), and a status line: folder, branch, model, context, usage limits ([`statusline.sh`](home/dot_claude/executable_statusline.sh))
+- 🤖 **Claude Code**, with its own installer, so it updates itself ([`install-claude.sh`](home/.chezmoiscripts/run_onchange_after_install-claude.sh)); Opus at xhigh effort, auto mode, no Claude lines in commits ([`settings.json`](home/dot_claude/modify_settings.json): only these, the rest is Claude Code's); a status line: folder, branch, model, context, usage limits ([`statusline.sh`](home/dot_claude/executable_statusline.sh))
 - ☕ **Java, Node, Python and Terraform** with [mise](https://mise.jdx.dev): JDK 25 (default) and 11, Node 24, Python 3.14, Terraform 1.17, [`config.toml`](home/dot_config/mise/config.toml); a repo's `.sdkmanrc`, `.nvmrc` or `.python-version` picks its own
 
 ## 📝 Notes

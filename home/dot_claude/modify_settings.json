@@ -1,4 +1,11 @@
 #!/bin/sh
-# Claude Code's settings: my status line (statusline.sh) added to the file, the
-# rest left to Claude Code, which writes it too (/config)
-jq -s '(.[0] // {}) | .statusLine = {"type": "command", "command": "~/.claude/statusline.sh", "padding": 0}'
+# Claude Code's settings: mine merged into the file, the rest left to Claude Code,
+# which writes it too (/config, /model, plugins)
+jq -s '(.[0] // {}) * {
+	# no Claude lines or session links in commits
+	"attribution": {"commit": "", "sessionUrl": false},
+	"permissions": {"defaultMode": "auto"},
+	"model": "opus",
+	"effortLevel": "xhigh",
+	"statusLine": {"type": "command", "command": "~/.claude/statusline.sh", "padding": 0}
+}'
