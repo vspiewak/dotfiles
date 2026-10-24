@@ -20,5 +20,9 @@ bindkey -e
 # completion, including Homebrew's (brew shellenv in .zprofile adds them to fpath)
 autoload -Uz compinit && compinit
 
+# gcloud's completion: its Homebrew cask doesn't add it for zsh
+[ -f /opt/homebrew/share/google-cloud-sdk/completion.zsh.inc ] &&
+	source /opt/homebrew/share/google-cloud-sdk/completion.zsh.inc
+
 # starship prompt
 command -v starship >/dev/null && eval "$(starship init zsh)"
