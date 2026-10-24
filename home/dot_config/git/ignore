@@ -1,2 +1,17 @@
-# a repo's own gcloud login (refresh tokens, see ~/.zshenv): never committed
+# my machines' and tools' files, in every repo (build output: in each repo)
+
+# macOS
+.DS_Store
+
+# editors
+.idea/
+*.iml
+.vscode/
+*.swp
+
+# local settings: Claude Code's (it adds this line itself), mise's
+**/.claude/settings.local.json
+mise.local.toml
+
+# a repo's own gcloud login (see ~/.zshenv)
 .gcloud/
