@@ -15,6 +15,7 @@ brew "mise"
 brew "shellcheck"
 brew "starship"
 brew "tailscale"
+brew "tmux"
 brew "wget"
 brew "yq"
 
