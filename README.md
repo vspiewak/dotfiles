@@ -22,7 +22,11 @@ gh auth login --hostname github.com --git-protocol ssh --skip-ssh-key --web --in
 ssh-key-sync <work>
 cd ~/Dev/github-<work> && gh auth login --hostname github.com --git-protocol ssh --skip-ssh-key --web --insecure-storage
 
-# 6. from the herdr client (e.g. the MacBook)
+# 6. Claude Code: /login in it (over SSH: c copies the URL to open on your
+#    computer, then paste back the code it shows)
+claude
+
+# 7. from the herdr client (e.g. the MacBook)
 herdr machine add <user>@<hostname>.<tailnet>.ts.net --label <hostname>
 
 # later, to update (asks your password once)
@@ -42,13 +46,14 @@ chezmoi update --init
 - 🌿 **git**: signed commits, personal repos in `~/Dev/github`, work repos in `~/Dev/github-<work>`
 - ☁️ **gcloud**: your work login in `~/.config/gcloud`, a repo's own in its `.gcloud/` (never committed)
 - 🐳 **Docker** with [Colima](https://github.com/abiosoft/colima): `docker`, `docker compose`, Testcontainers; a VM of 8 CPUs and 16 GB, Rosetta for amd64 images, up after each login ([`configure-colima.sh`](home/.chezmoiscripts/run_onchange_after_configure-colima.sh))
+- 🤖 **Claude Code**, with its own installer, so it updates itself ([`install-claude.sh`](home/.chezmoiscripts/run_onchange_after_install-claude.sh))
 - ☕ **Java, Node, Python and Terraform** with [mise](https://mise.jdx.dev): JDK 25 (default) and 11, Node 24, Python 3.14, Terraform 1.17, [`config.toml`](home/dot_config/mise/config.toml); a repo's `.sdkmanrc`, `.nvmrc` or `.python-version` picks its own
 
 ## 📝 Notes
 
 - **Accounts by folder**: in `~/Dev/github-<name>/`, a [`gh` wrapper](home/dot_local/bin/executable_gh) uses the `vspiewak-<name>` login, and for the work account git uses its email, signing key and SSH key ([`work.config`](home/dot_config/git/work.config.tmpl)). No `gh auth switch`, so agents in different herdr panes never flip each other's account. The work name and emails are hex-encoded in [`.chezmoi.toml.tmpl`](home/.chezmoi.toml.tmpl): a new job is a new value there, then `ssh-key-sync <work>`.
 - **[`ssh-key-sync [<name>]`](home/dot_local/bin/executable_ssh-key-sync)** creates `~/Dev/github` (or `~/Dev/github-<name>`) and `~/.ssh/id_ed25519` (or `~/.ssh/<name>`), adds it to GitHub through a throwaway `gh` login (asked each run, deleted after), adds GitHub's host keys to `known_hosts`, and commits a personal key to [`authorized_keys`](home/private_dot_ssh/authorized_keys): the other machines get it with `chezmoi update`.
-- **gh over SSH**: macOS keeps the Keychain from SSH sessions, so the agents' tokens are in `~/.config/gh*/hosts.yml` (yours only, encrypted at rest by FileVault).
+- **gh and Claude Code over SSH**: macOS keeps the Keychain from SSH sessions, so the agents' tokens are in `~/.config/gh*/hosts.yml` and `~/.claude/.credentials.json` (yours only, encrypted at rest by FileVault).
 - **gcloud by repo**: in a repo with a `.gcloud/` folder, `gcloud`, Spring's credentials and everything started there (agents too) use that login, set up once with `mkdir .gcloud && cd . && gcloud auth login --update-adc`. Everywhere else: your work login, refreshed with the same `gcloud auth login --update-adc`. Over SSH, add `--no-launch-browser` and paste back the code Google shows. It's [`.zshenv`](home/dot_zshenv) setting `CLOUDSDK_CONFIG` on each `cd`.
 - **Java, Node and Python versions**: mise picks them from the folder each time `java`, `node` or `python` runs, so an agent that `cd`s into a repo gets that repo's. For one shell: `export MISE_JAVA_VERSION=temurin-11` (or `MISE_NODE_VERSION=22`). A repo pinning a JDK that isn't installed yet: `mise install` in it, once (a missing Node or Python installs by itself). `npm i -g` installs for the current Node version only.
 - **At home without Tailscale**: `ssh -4 <user>@<hostname>.local`.
