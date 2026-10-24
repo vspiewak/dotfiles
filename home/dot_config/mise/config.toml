@@ -1,0 +1,8 @@
+# JDKs, the first is the default: a repo's .sdkmanrc (or mise.toml) picks another.
+# temurin-<n>, as sdkman's <version>-tem pins become, so they match these installs
+[tools]
+java = ["temurin-25", "temurin-11"]
+
+[settings]
+# read sdkman's .sdkmanrc (and .java-version) in repos
+idiomatic_version_file_enable_tools = ["java"]

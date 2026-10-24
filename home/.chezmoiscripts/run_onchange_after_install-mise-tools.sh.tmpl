@@ -1,0 +1,6 @@
+#!/bin/sh
+# installs the tools in ~/.config/mise/config.toml, on each change of it:
+# {{ include "dot_config/mise/config.toml" | sha256sum }}
+set -eu
+
+mise install

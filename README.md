@@ -40,11 +40,13 @@ chezmoi update --init
 - 👻 **Ghostty**: Catppuccin Frappe, no ligatures, its terminfo installed on SSH hosts
 - 🧩 **VS Code** extensions, listed in [`configure-vscode.sh`](home/.chezmoiscripts/run_onchange_after_configure-vscode.sh)
 - 🌿 **git**: signed commits, personal repos in `~/Dev/github`, work repos in `~/Dev/github-<work>`
+- ☕ **Java** with [mise](https://mise.jdx.dev): JDK 25 (default) and 11, [`config.toml`](home/dot_config/mise/config.toml); a repo's `.sdkmanrc` picks its own
 
 ## 📝 Notes
 
 - **Accounts by folder**: in `~/Dev/github-<name>/`, a [`gh` wrapper](home/dot_local/bin/executable_gh) uses the `vspiewak-<name>` login, and for the work account git uses its email, signing key and SSH key ([`work.config`](home/dot_config/git/work.config.tmpl)). No `gh auth switch`, so agents in different herdr panes never flip each other's account. The work name and emails are hex-encoded in [`.chezmoi.toml.tmpl`](home/.chezmoi.toml.tmpl): a new job is a new value there, then `ssh-key-sync <work>`.
 - **[`ssh-key-sync [<name>]`](home/dot_local/bin/executable_ssh-key-sync)** creates `~/Dev/github` (or `~/Dev/github-<name>`) and `~/.ssh/id_ed25519` (or `~/.ssh/<name>`), adds it to GitHub through a throwaway `gh` login (asked each run, deleted after), adds GitHub's host keys to `known_hosts`, and commits a personal key to [`authorized_keys`](home/private_dot_ssh/authorized_keys): the other machines get it with `chezmoi update`.
 - **gh over SSH**: macOS keeps the Keychain from SSH sessions, so the agents' tokens are in `~/.config/gh*/hosts.yml` (yours only, encrypted at rest by FileVault).
+- **JDKs**: mise picks the JDK from the folder each time `java` runs, so an agent that `cd`s into a repo gets that repo's. For one shell: `export MISE_JAVA_VERSION=temurin-11`. A repo pinning a JDK that isn't installed yet: `mise install` in it, once.
 - **At home without Tailscale**: `ssh -4 <user>@<hostname>.local`.
 - `dotfiles.vspiewak.com` is GitHub Pages serving [`install.sh`](install.sh) ([`pages.yml`](.github/workflows/pages.yml)). The previous MacBook setup is on [`legacy`](https://github.com/vspiewak/dotfiles/tree/legacy).
