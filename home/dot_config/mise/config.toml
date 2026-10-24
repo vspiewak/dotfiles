@@ -6,6 +6,7 @@
 java = ["temurin-25", "temurin-11"]
 node = "24"
 python = "3.14"
+terraform = "1.17"
 
 [settings]
 # read sdkman's .sdkmanrc, nvm's .nvmrc and pyenv's .python-version (and

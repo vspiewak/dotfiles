@@ -42,7 +42,7 @@ chezmoi update --init
 - 🌿 **git**: signed commits, personal repos in `~/Dev/github`, work repos in `~/Dev/github-<work>`
 - ☁️ **gcloud**: your work login in `~/.config/gcloud`, a repo's own in its `.gcloud/` (never committed)
 - 🐳 **Docker** with [Colima](https://github.com/abiosoft/colima): `docker`, `docker compose`, Testcontainers; a VM of 8 CPUs and 16 GB, Rosetta for amd64 images, up after each login ([`configure-colima.sh`](home/.chezmoiscripts/run_onchange_after_configure-colima.sh))
-- ☕ **Java, Node and Python** with [mise](https://mise.jdx.dev): JDK 25 (default) and 11, Node 24, Python 3.14, [`config.toml`](home/dot_config/mise/config.toml); a repo's `.sdkmanrc`, `.nvmrc` or `.python-version` picks its own
+- ☕ **Java, Node, Python and Terraform** with [mise](https://mise.jdx.dev): JDK 25 (default) and 11, Node 24, Python 3.14, Terraform 1.17, [`config.toml`](home/dot_config/mise/config.toml); a repo's `.sdkmanrc`, `.nvmrc` or `.python-version` picks its own
 
 ## 📝 Notes
 
