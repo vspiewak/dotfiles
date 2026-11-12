@@ -24,6 +24,7 @@ brew "yq"
 cask "gcloud-cli"
 cask "ghostty"
 cask "google-chrome"
+cask "intellij-idea"
 cask "visual-studio-code"
 cask "vlc"
 EOF
