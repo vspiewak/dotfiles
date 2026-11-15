@@ -1,8 +1,7 @@
 # Colima's VMs (ssh colima): Colima adds this line back if it's missing
 Include ~/.colima/ssh_config
 
-# the Mac mini, through Tailscale: plain m5mini resolves through the home router
-# to its public IPv6, from where it doesn't accept SSH
+# Mac mini through Tailscale
 Host m5mini
 	HostName m5mini.tailf2a81c.ts.net
 	User vince
