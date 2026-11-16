@@ -19,6 +19,7 @@ brew "shellcheck"
 brew "starship"
 brew "tailscale"
 brew "tmux"
+brew "uv"
 brew "wget"
 brew "yq"
 
