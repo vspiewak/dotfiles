@@ -7,6 +7,8 @@ for extension in \
 	golang.Go \
 	ms-azuretools.vscode-docker \
 	ms-vscode-remote.vscode-remote-extensionpack \
+	vmware.vscode-boot-dev-pack \
+	vscjava.vscode-java-pack \
 	yzhang.markdown-all-in-one; do
 	code --force --install-extension "$extension"
 done
